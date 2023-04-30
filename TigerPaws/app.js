@@ -1,97 +1,68 @@
+// Load required modules
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+const path = require('path')
+
+// Create express app
 const app = express();
 
-var path = require('path')
-
-//Loads Resources file to let the images load, check login remake for example of how to load an image from Resources
-app.use(express.static('public')); 
-app.use('/Resources', express.static('Resources'));
-
-//Loads CSS file
+// Set up middleware
 app.use(express.static('public'));
+app.use('/Resources', express.static('Resources'));
 app.use('/views/CSS', express.static('CSS'));
 
+// Set up session - used for user authentication
+app.use(session({
+    secret: 'randomString',
+    resave: false,
+    saveUninitialized: false,
+}));
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
-app.set('view engine', 'ejs');
-
-//Needed for mongoose
-//Had to install mongoose with:
-//npm install mongoose --save
-// also npm install routes --save
-const mongoose = require("mongoose");
-//Use to make routes so we can have separate files with HTTP requests
-//It's referencing a folder called routes in the same directory where route files would be kept and
-//then can be used to handle requests
-const RouterCourses = require("./api/routes/courses")
-const RouterUsers = require("./api/routes/users")
-
 app.use(express.json());
-//connecting to cluster
-//I don't know if it was to connect to my account?
+app.use(express.urlencoded({extended: true}));
+
+// Set up view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname + '/views'));
+
+// Connect to database
 mongoose.connect('mongodb+srv://audreydeering:matbis-viqqu6-pArjyz@clustersoftwareengineer.mql7prx.mongodb.net/webAppDatabase?retryWrites=true&w=majority',
-  {
+{
     useNewUrlParser: true,
     useUnifiedTopology: true
-  }
-)
-//instance of connection and confirms connection in console log
+})
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error: "))
 db.once("open", function () {
-  console.log("Connected successfully");
+    console.log("Connected successfully");
 })
 
 
+/*
+For the routers I am keeping the route prefix in case someone wants to 
+come back and divide everything into separate files and make it all pretty.
+For now, every route that was in this file was just moved into its own router file.
+*/
 
-//Routes that can be made into separate files with routes?
-app.route("/register").get((req, res) => {
-    res.render('pages/register.ejs');
-});
+// Load Routers 
+const RouterViews = require("./routes/allTheRoutes");
 
-app.route("/").get((req, res) => {
-    res.render('pages/login-remake.ejs');
-});
+// Use View Routers
+app.use('/', RouterViews);
 
-app.route("/login").get((req, res) => {
-    res.render('pages/login-remake.ejs');
-});
+// Load API routers
+const RouterCourses = require("./api/routes/courses")
+const RouterUsers = require("./api/routes/users")
 
-app.route("/successfulLogin").get((req, res) => {
-    res.render('pages/successfulLogin.ejs');
-});
-app.route("/administrator-remake").get((req,res) => {
-    res.render('pages/administrator-remake');
-});
-app.route("/manage-courses-student").get((req,res) => {
-    res.render('pages/manage-courses-student');
-});
-app.route("/course-list-page").get((req,res) => {
-    res.render('pages/course-list-page');
-});
-app.route("/course-search-page").get((req,res) => {
-    res.render('pages/course-search-page')
-})
-app.route("/student-page").get((req,res) => {
-    res.render('pages/student-page')
-})
-app.route("/professor-page").get((req,res) => {
-    res.render('pages/professor-page-remake')
-})
-app.route("/administrator-addCourses").get((req,res) => {
-    res.render('pages/administrator-addCourses')
-})
-app.route("/administrator-removeCourses").get((req,res) => {
-    res.render('pages/administrator-removeCourses')
-})
-app.route("/help-page").get((req,res) => {
-    res.render('pages/help-page')
-})
-//Using router const, duh
-app.use(RouterCourses)
-app.use(RouterUsers)
+// Use API Routers
+app.use('/', RouterUsers);
+app.use('/', RouterCourses);
 
+// Start the server
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
-

@@ -1,16 +1,11 @@
 const express = require("express");
 //Requiring model so that it is using the course schema 
 const courseModel = require("../models/courseModels");
-const app = express();
-//Body parser is necessary because it is used to understnad
-//the request body
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json())
-const path = require('path')
+
+const router = express.Router();
 
 //at route "/courses" log all the courses in collection
-app.get("/courses", async (req, res) => {
+router.get("/courses", async (req, res) => {
     const courses = await courseModel.find({});
     try {
         console.log("Printing all courses:")
@@ -21,7 +16,7 @@ app.get("/courses", async (req, res) => {
     }
   })
 
-  app.post("/courseSearch", async(req, res) => {
+  router.post("/courseSearch", async(req, res) => {
     //Gets the input from the search box on the search page, currently just takes course number
     const course = req.body.course
     
@@ -38,7 +33,7 @@ app.get("/courses", async (req, res) => {
     //print courses into log
   })
 
-  app.post("/addCourse", async(req, res) => {
+  router.post("/addCourse", async(req, res) => {
 
     //This big block gets all the data from the form and makes it into a usable form
     const courseName = req.body.courseName
@@ -55,4 +50,5 @@ app.get("/courses", async (req, res) => {
     //COURSE SECTION NEEDS TO BE ADDED, IT IS CURRENTLY ALWAYS ADDED AS 1
     //ALSO LIKE, ACTUALLY ADDING THE COURSE NEEDS TO BE ADDED
   })
-module.exports = app
+
+module.exports = router;

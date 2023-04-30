@@ -1,52 +1,50 @@
 const express = require("express");
 const userModel = require("../models/userModels");
-const courseModel = require("../models/courseModels")
-const app = express()
-const bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-const path = require('path')
+const courseModel = require("../models/courseModels");
+const { userTypes } = require('../../functions/authentication/authentication');
 
-app.post("/userLogin", async(req, res) => {
-    //req.body.email is referencing the email variable in the received request body
-    const email = req.body.email
-    const pwd = req.body.pwd
-    //This is assuming that it is not possible for two different accounts to have the same
-    //email and password, which Trinity ensures because they give unique emails
+const router = express.Router();
 
-    //searches database for a document where password field matches pwd, and email field matches email
-    //returns an array, either empty or containing the matching account
-    const userMatches = await userModel.find({password: pwd, email: email}).exec();
-    console.log("request made")
-    console.log(email)
-    console.log(pwd)
-    console.log(userMatches)
+router.post("/userLogin", async(req, res) => {
+  const { email, pwd } = req.body;
 
-    if (userMatches.length == 0) {
-        console.log("No such user found. Make sure username and password are correct.")
-        res.render(path.join(__dirname, '/../../views/pages/login-remake.ejs'))
-        //send response
-    } else {
-      var user = userMatches[0];
-      var role = user.userType;
+  const userMatches = await userModel.find({email: email});
 
-      if(role == 'admin'){
-        res.render(path.join(__dirname, '/../../views/pages/administrator-remake.ejs'))
-      }else if(role == 'professor'){
-        res.render(path.join(__dirname, '/../../views/pages/professor-page-remake.ejs'))
-      } else if(role == 'student'){
-        res.render(path.join(__dirname, '/../../views/pages/student-page.ejs'))
-      }
-      //if successfull got to another page
-      //render then res.send?
+  if (userMatches.length > 1) {
+    return res.status(401).json({ error: 'Multiple Users with same email'});
+  }
 
-      //render this page
-      
-    }
+  if (userMatches.length == 0) {
+    console.log("No such user found. Make sure username and password are correct.");
+    return res.redirect('/');
+  }
+
+  const user = userMatches[0];
+
+  // CHECK PASSWORD
+
+  if (user.password != pwd) {
+    console.log("Invalid Password");
+    return res.redirect('/');
+  }
+
+  // REDIRECT DIFFERENT USERS
+
+  if (user.userType === userTypes.STUDENT) {
+    req.session.user = user;
+    return res.redirect('/student-page');
+  } else if (user.userType === userTypes.PROFESSOR) {
+    req.session.user = user;
+    return res.redirect('/professor-page');
+  } else if (user.userType === userTypes.ADMIN) {
+    req.session.user = user;
+    return res.redirect('/administrator-remake');
+  }
   
-  })
+  return res.status(401).json({ error: 'No user type found'});
+});
 
-  app.post("/register", async(req, res) =>{
+  router.post("/register", async(req, res) =>{
 
     //Gets info from the HTML form
     const email = req.body.email //We use email because it should be unique for every user
@@ -89,4 +87,4 @@ app.post("/userLogin", async(req, res) => {
       }
   })
 
-module.exports = app
+module.exports = router;

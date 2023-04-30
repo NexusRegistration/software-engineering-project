@@ -1,11 +1,11 @@
-# software-engineering-project
+How to run
 
-This is our tigerpaws-like website for managing courses 
+In terminal, type cd .\TigerPaws\
 
-Current Tasks - Deadline(Friday, March 10)
+after that, in terminal, type node app.js
 
-Andrew & Audrey - Establishing a database
+Website should be on localhost:3000
 
-Elian & Agustin - Write the HTML for the layout of the LogIn page
-
-Kenneth & Dennis -  Write the layout 
+Basic login things:
+username: dreck@trinity.edu
+password: dreck
