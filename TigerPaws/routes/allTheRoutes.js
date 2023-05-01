@@ -56,4 +56,8 @@ router.get("/manage-courses-student", restrictAccess(userTypes.STUDENT),(req,res
     res.render('pages/manage-courses-student');
 });
 
+router.get('/create-user', restrictAccess(userTypes.ADMIN), (req, res) => {
+    res.render('pages/create-user');
+});
+
 module.exports = router;

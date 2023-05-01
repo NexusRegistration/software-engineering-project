@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<!--Header-->
+	<title>User Registration Form</title>
+
+	<link rel="stylesheet" href="/css/style.css">
+
+	<style>
+		/*form{	
+			width: 425px;
+			padding-left: 5%;
+			padding-right: 5%;
+			padding-bottom: 4%;
+		}*/
+	</style>
+
+</head>
+<body>
+	
+	<form action="/create-user" class="create-user" method="POST">
+			
+			<!--'Add User' Title-->
+			<h1> Add User </h1>+
+
+			<!--Status Dropdown Menu-->
+			<div class="form-input">
+                <select name="role" required>
+                    <option selected>Status...</option>
+                    <option value="admin">Admin</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                </select>
+			</div>
+
+			<!--Email Text Box-->
+			<div class="form-input">
+            	<input type="text" name="email" placeholder="Email" required>	
+			</div>
+
+			<!--Password Text Box-->
+			<div class="form-input">
+            	<input type="password" name="password" placeholder="Password">	
+				<!--randmonly generate password?-->
+			</div>
+
+			<!--Submit Button-->
+			<div class="form-group">
+				<button type="submit" class="btn-primary">Add User</button>
+			</div>
+	</form>
+
+	
+</body>
+</html>

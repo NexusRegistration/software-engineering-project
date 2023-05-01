@@ -2,6 +2,7 @@ const express = require("express");
 const userModel = require("../models/userModels");
 const courseModel = require("../models/courseModels");
 const { userTypes } = require('../../functions/authentication/authentication');
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
@@ -23,9 +24,9 @@ router.post("/userLogin", async(req, res) => {
 
   // CHECK PASSWORD
 
-  if (user.password != pwd) {
-    console.log("Invalid Password");
-    return res.redirect('/');
+  const isValidPassword = await bcrypt.compare(pwd, user.password);
+  if (!isValidPassword) {
+    return res.status(401).json({ error: 'Invalid password' });
   }
 
   // REDIRECT DIFFERENT USERS
@@ -43,6 +44,34 @@ router.post("/userLogin", async(req, res) => {
   
   return res.status(401).json({ error: 'No user type found'});
 });
+
+router.post('/create-user', async (req, res) => {
+  console.log(req.body);
+  try {
+      // Get user input from registration form
+      const { email, password, role } = req.body;
+      
+      //hash password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      // Add user to database
+      const savedUser = await addUser(email, hashedPassword, role);
+  
+      // Redirect to login page
+      res.redirect('/');
+  } catch (err) {
+      // Handle errors
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
+async function addUser(email, password, role) {
+  const user = new userModel({email, password, userType: role});
+  const savedUser = await user.save();
+  return savedUser;
+}
 
   router.post("/register", async(req, res) =>{
 
