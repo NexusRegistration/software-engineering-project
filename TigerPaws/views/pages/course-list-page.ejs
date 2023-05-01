@@ -18,23 +18,7 @@ Days, and Pathways. Furthermore, it has the standard Top Nav Bar and a table for
 </head>
 <body>
 <!--Nav Bar at top of Screen-->
-<div class="container">
-    <nav class="navbar navbar-inverse" style="background-color: #840705;">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#" style="color: white;">TigerFeet</a>
-          </div>
-          <ul class="nav navbar-nav navbar-right">
-            <!--Find Course Button-->
-            <li><a href="#"><span class="glyphicon glyphicon-search"></span> Find Course</a></li>
-            <!--Help Button-->
-            <li><a href="#" data-toggle="popover" title="Follow this Link for Online Resources" data-content="Resources"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
-            <!--Log Out Button-->
-            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-          </ul>
-        </div>
-      </nav>
-</div>
+<%- include('partials/home-navigation-bar.ejs')%>
 <!--The Dropdown Filter Menu DOES NOT WORK-->
 <div class="container">
     <div class="row"    style="margin-bottom: 2rem;">
@@ -127,7 +111,7 @@ Days, and Pathways. Furthermore, it has the standard Top Nav Bar and a table for
                 <td><%= courses[i].meetingTime.startTime%> - <%= courses[i].meetingTime.endTime%></td>
                 <td><%= courses[i].instructor%></td>
                 <td><button type="button" class="btn" style="background-color: #ddb9b6;" onclick = "location.href = 'register' /*+ '?courseId'+ courses[i]._id.str;*/">Register</button></td>
-
+                <!--onClick, add a function that automatically registers student for class-->
             </tr>
             <% } %>   
         </tbody>

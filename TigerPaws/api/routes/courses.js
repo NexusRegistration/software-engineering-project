@@ -3,6 +3,7 @@ const express = require("express");
 const courseModel = require("../models/courseModels");
 
 const router = express.Router();
+const path = require('path');
 
 //at route "/courses" log all the courses in collection
 router.get("/courses", async (req, res) => {

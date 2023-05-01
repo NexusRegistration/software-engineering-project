@@ -1,7 +1,11 @@
-const express = require("express")
-const app = express()
-const port = 8000
-app.set("view engine","ejs")
+
+const express = require("express");
+const app = express();
+const port = 8000;
+
+app.set("view engine","ejs");
+
+const path = require('path');
 
 app.route("/first").get(function(req,res) {
     res.render("pages/first", {
@@ -20,4 +24,4 @@ app.get("/",function(req,res) {
     res.render("pages/index")
 })
 
-app.listen(port)
+app.listen(port);

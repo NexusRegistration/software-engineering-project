@@ -21,23 +21,7 @@ Page comes with a search bar for courses and the standard Top Nav Bar.
     </head>
     <body>
         <!--Nav Bar at top of Screen-->
-        <div class="container">
-            <nav class="navbar navbar-inverse" style="background-color: #840705;">
-                <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#" style="color: white;">TigerFeet</a>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-                    <!--Find Course Button-->
-                    <li><a href="#"><span class="glyphicon glyphicon-search"></span> Find Course</a></li>
-                    <!--Help Button-->
-                    <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
-                    <!--Log Out Button-->
-                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-                </ul>
-                </div>
-            </nav>
-        </div>
+        <%- include('partials/home-navigation-bar.ejs')%>
 
         <!--Course Search Bar-->
         <div class="container">
