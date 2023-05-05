@@ -1,4 +1,6 @@
 const express = require('express');
+const courseModel = require("../api/models/courseModels");
+
 const router = express.Router();
 const { userTypes, restrictAccess } = require('../functions/authentication/authentication');
 
@@ -52,8 +54,22 @@ router.get("/register", restrictAccess(userTypes.STUDENT), (req, res) => {
     res.render('pages/register.ejs');
 });
 
-router.get("/manage-courses-student", restrictAccess(userTypes.STUDENT),(req,res) => {
-    res.render('pages/manage-courses-student');
+router.get("/manage-courses-student", restrictAccess(userTypes.STUDENT),async (req,res) => {
+    try {
+        const classes = req.session.user.registeredCourses;
+        var courses = []
+        for (x =0 ; x < classes.length; x++){
+            const courseMatch = await courseModel.findOne({name: classes[x]}).populate().exec();
+            courses.push(courseMatch);
+        }
+        console.log(courses);
+        res.render('pages/manage-courses-student', {courses});
+    }   
+    catch(err){
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+    
 });
 
 module.exports = router;

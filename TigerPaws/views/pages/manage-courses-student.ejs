@@ -6,27 +6,83 @@ Page comes with a submit button for View Registered Courses and the standard Top
 <!DOCTYPE html>
 <html>
     <head>
+    
+    <style>
+        #customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #840705;
+  color: white;
+}
+    body{
+        counter-reset: class;
+        
+    }
+    li {
+    list-style-type: upper-roman;
+    text-align: match-parent;
+    }
+   
+    </style>
         <title>Manage Courses</title>
         <link rel="stylesheet" href="CSS/homepages.css">
     </head>
-   
+    <%- include('partials/home-navigation-bar.ejs')%>
     <body>
+        
         <div class="navigationPanel">
             <!--Associated Role-->
-           <a href='student-page.ejs';>Student</a> 
+
            <div></div>
            <div></div>
-           <a href>Help</a>
-           <a href>Log Out</a>
         </div>
         <div class = "body">
             <div></div>
-            <div class="buttons">
-                <!--View Registered Classes Button-->
-                <button type="button">View Registered Classes</button>
+           
                 
-            </div>
-            <div></div>
+            <table id="customers">
+                <tr>
+                  <th>Course Name</th>
+                  <th>Course Number</th>
+                  <th>Course Dept</th>
+                  <th>Instructor</th>
+                  <th>Credit Hours</th>
+                  <th>Pathways</th>
+                </tr>
+            <% for(var i =0; i < courses.length; i ++) { %>
+                <tr>
+                    <td> <%=courses[i].name%></td>
+                    <td> <%=courses[i].courseNum%></td>
+                    <td> <%=courses[i].courseDept%></td>
+                    <td> <% if(courses[i].instructor != ' ') { %>
+                     <%=courses[i].instructor%>
+                        <% } else{ %>
+                             unassigned
+                        <% }%>
+                        </td>
+                    <td> <%=courses[i].creditHours%></td>
+                    <td> <%=courses[i].pathways%></td>
+
+
+                </tr>
+            <% } %>
+            </table>
         </div>
         <div class = "logo">
             <div></div>
