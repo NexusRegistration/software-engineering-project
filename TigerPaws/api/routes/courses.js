@@ -26,6 +26,8 @@ router.get("/courses", async (req, res) => {
 
     //Checks if the array is empty, if it is then return to search page, if not then render list page with the info from course matches
     if(courseMatches.length == 0){
+      let alert = require('alert');
+      alert("No course found.")
       console.log("No course found. Try harder please")
       res.render(path.join(__dirname, '/../../views/pages/course-search-page.ejs'))
     } else {

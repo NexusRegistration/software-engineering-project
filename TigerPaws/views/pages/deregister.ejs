@@ -1,0 +1,103 @@
+<!--
+                                  MANAGE COURSES PAGE
+Page comes with a submit button for View Registered Courses and the standard Top Nav Bar.
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+    
+    <style>
+        #customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #840705;
+  color: white;
+}
+    body{
+        counter-reset: class;
+        
+    }
+    li {
+    list-style-type: upper-roman;
+    text-align: match-parent;
+    }
+   
+    </style>
+        <title>Manage Courses</title>
+        <link rel="stylesheet" href="CSS/homepages.css">
+    </head>
+    <%- include('partials/home-navigation-bar.ejs')%>
+    <body>
+        
+        <div class="navigationPanel">
+            <!--Associated Role-->
+
+           <div></div>
+           <div></div>
+        </div>
+        <div class = "body">
+            <div></div>
+           
+                
+            <table id="customers">
+                <tr>
+                  <th>Course Name</th>
+                  <th>Course Number</th>
+                  <th>Course Dept</th>
+                  <th>Instructor</th>
+                  <th>Credit Hours</th>
+                  <th>Pathways</th>
+                  <th>Deregister</th>
+                </tr>
+            <% for(var i =0; i < courses.length; i ++) { %>
+                <tr>
+                    <td> <%=courses[i].name%></td>
+                    <td> <%=courses[i].courseNum%></td>
+                    <td> <%=courses[i].courseDept%></td>
+                    <td> <% if(courses[i].instructor != ' ') { %>
+                     <%=courses[i].instructor%>
+                        <% } else{ %>
+                             unassigned
+                        <% }%>
+                        </td>
+                    <td> <%=courses[i].creditHours%></td>
+                    <td> <%=courses[i].pathways%></td>
+                    <td>
+                    <a href="/studentunregister">
+                        <button data-modal-target="#modal<%= i %>" class="btn-edit">
+                        <span class="material-symbols-outlined">
+                            Remove Class
+                        </span>
+                    </button>
+                </a>
+                </td>
+
+
+                </tr>
+            <% } %>
+            </table>
+        </div>
+        <div class = "logo">
+            <div></div>
+            <!--Trinity Logo-->
+            <img src="/TigerPaws/Resources/TrinityLogo.png"style="width: 400px; height=400px">
+        </div>
+    </body>
+</html>

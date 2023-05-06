@@ -72,4 +72,25 @@ router.get("/manage-courses-student", restrictAccess(userTypes.STUDENT),async (r
     
 });
 
+router.get("/deregister", restrictAccess(userTypes.STUDENT),async(req,res) =>{
+    try {
+        const classes = req.session.user.registeredCourses;
+        var courses = []
+        for (x =0 ; x < classes.length; x++){
+            const courseMatch = await courseModel.findOne({name: classes[x]}).populate().exec();
+            courses.push(courseMatch);
+        }
+        console.log(courses);
+        res.render('pages/deregister', {courses});
+    }   
+    catch(err){
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+router.get("/studentunregister", restrictAccess(userTypes.STUDENT),async(req,res) =>{
+    res.render('pages/studentunregister');
+});
+
 module.exports = router;
