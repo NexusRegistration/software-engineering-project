@@ -64,6 +64,7 @@ Page comes with a submit button for View Registered Courses and the standard Top
                   <th>Instructor</th>
                   <th>Credit Hours</th>
                   <th>Pathways</th>
+                  <th>Deregister</th>
                 </tr>
             <% for(var i =0; i < courses.length; i ++) { %>
                 <tr>
@@ -78,6 +79,15 @@ Page comes with a submit button for View Registered Courses and the standard Top
                         </td>
                     <td> <%=courses[i].creditHours%></td>
                     <td> <%=courses[i].pathways%></td>
+                    <td>
+                    <a href="/studentunregister">
+                        <button data-modal-target="#modal<%= i %>" class="btn-edit">
+                        <span class="material-symbols-outlined">
+                            Remove Class
+                        </span>
+                    </button>
+                </a>
+                </td>
 
 
                 </tr>

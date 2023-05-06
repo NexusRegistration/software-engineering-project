@@ -15,6 +15,8 @@ Days, and Pathways. Furthermore, it has the standard Top Nav Bar and a table for
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="functions/registration.js"></script>
 </head>
 <body>
 <!--Nav Bar at top of Screen-->
@@ -110,7 +112,8 @@ Days, and Pathways. Furthermore, it has the standard Top Nav Bar and a table for
                 <td><%= courses[i].meetingTime.days%></td>
                 <td><%= courses[i].meetingTime.startTime%> - <%= courses[i].meetingTime.endTime%></td>
                 <td><%= courses[i].instructor%></td>
-                <td><button type="button" class="btn" style="background-color: #ddb9b6;" onclick = "location.href = 'register' /*+ '?courseId'+ courses[i]._id.str;*/">Register</button></td>
+                <td><button type="button" class="btn" style="background-color: #ddb9b6;" data-class-id="<%=courses[i]._id%>" onClick = "addToList(this)">Register</button></td>
+                <!--/*location.href = 'register' + '?courseId'+ courses[i]._id.str;*/-->
                 <!--onClick, add a function that automatically registers student for class-->
             </tr>
             <% } %>   
