@@ -12,6 +12,7 @@ const app = express();
 app.use(express.static('public'));
 app.use('/Resources', express.static('Resources'));
 app.use('/views/CSS', express.static('CSS'));
+app.use('/functions', express.static('functions'));
 
 // Set up session - used for user authentication
 app.use(session({

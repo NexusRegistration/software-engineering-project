@@ -3,6 +3,8 @@ const courseModel = require("../api/models/courseModels");
 
 const router = express.Router();
 const { userTypes, restrictAccess } = require('../functions/authentication/authentication');
+const path = require('path');
+const fs = require('fs');
 
 // Set up routes
 router.get("/", (req, res) => {
@@ -91,6 +93,13 @@ router.get("/deregister", restrictAccess(userTypes.STUDENT),async(req,res) =>{
 
 router.get("/studentunregister", restrictAccess(userTypes.STUDENT),async(req,res) =>{
     res.render('pages/studentunregister');
+});
+
+router.get('/registration.js', (req, res) => {
+    const filePath = path.join(__dirname, '..', 'public', 'javascripts', 'registration.js');
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    res.set('Content-Type', 'application/javascript');
+    res.send(fileContents);
 });
 
 module.exports = router;

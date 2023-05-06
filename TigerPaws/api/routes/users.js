@@ -3,6 +3,9 @@ const userModel = require("../models/userModels");
 const courseModel = require("../models/courseModels");
 const { userTypes } = require('../../functions/authentication/authentication');
 
+const { default: mongoose } = require('mongoose');
+const path = require('path');
+
 const router = express.Router();
 const path = require('path');
 
@@ -49,7 +52,81 @@ router.post("/userLogin", async(req, res) => {
   return res.status(401).json({ error: 'No user type found'});
 });
 
-  router.post("/register", async(req, res) =>{
+router.post("/register", async(req, res) =>{
+  try{
+      //console.log("Inside /register post");
+      const classId = new mongoose.Types.ObjectId(req.body.classId);
+      console.log(classId);
+      //console.log("After ObjectID call");
+      const USER = req.session.user
+      
+      if (USER){
+        const userId = req.session.user._id;
+        console.log(userId);
+
+        const savedUser = await addToList(userId, classId);
+
+        console.log(savedUser.message);
+        res.send(savedUser.message);
+      } else {
+        console.log("No one is currently logged in so you cannot be registered for a class.");
+      }
+      //console.log("Before res render");
+      //res.render(path.join(__dirname, '/../../views/pages/student-page.ejs'))
+      //return res.redirect('/student-page');
+      //console.log("After res render");
+  } catch (err) {
+      //Handle Errors
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+  }
+});  
+
+async function addToList(studentId, classId) {
+  try {
+    const student = await userModel.findById(studentId);
+    const classObj = await courseModel.findById(classId);
+
+    console.log("\nAdding " + classObj.name + " to " + student.username.first + "'s Class List\n");
+
+    student.registeredCourses.push(classObj.name);
+
+    console.log(student);
+
+    //classObj.students.push(student._id);
+
+    // Save the updated student document to the User collection
+    await student.save().catch(err => {
+      console.error('Error saving student:', err);
+      throw err;
+    });
+
+    /*const filter = {email: student.email}
+
+      const updateDoc = {
+        $push: {
+          registeredCourses: classObj.name
+        }
+      }
+      
+      const result = await userModel.updateOne(filter, updateDoc)
+      console.log(result)*/
+    
+    //await Clss.findByIdAndUpdate(classId, { $addToSet: { students: studentId } }, { new: true });
+
+    return {
+      success: true,
+      message: `The class "${classObj.name}" has been added to ${student.username.first}'s class list.`
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
+
+/*router.post("/register", async(req, res) =>{
 
     //Gets info from the HTML form
     const email = req.body.email //We use email because it should be unique for every user
@@ -96,7 +173,7 @@ router.post("/userLogin", async(req, res) => {
         res.render(path.join(__dirname, '/../../views/pages/student-page.ejs'))
       }
       }
-  })
+  })*/
 
   router.post("/deregister", async(req, res) =>{
   })
