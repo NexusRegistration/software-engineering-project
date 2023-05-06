@@ -61,13 +61,26 @@ router.post("/register", async(req, res) =>{
       
       if (USER){
         const userId = req.session.user._id;
-        console.log(userId);
+        //console.log(userId);
 
         const savedUser = await addToList(userId, classId);
 
         console.log(savedUser.message);
+        //let alert = require('alert');
+        //alert(savedUser.message)
         res.send(savedUser.message);
+
+        // When I try to render another page, I get a "Cannot set headers error"
+        /*const student = await userModel.findById(userId);
+        const courses = student.registeredCourses;
+        console.log(courses)
+        if(courses){
+          res.render('pages/manage-courses-student', {courses});
+        }*/
+
       } else {
+        let alert = require('alert');
+        alert("Username or password incorrect.")
         console.log("No one is currently logged in so you cannot be registered for a class.");
       }
       //console.log("Before res render");
@@ -90,7 +103,7 @@ async function addToList(studentId, classId) {
     for(let i = 0; i < student.registeredCourses.length; ++i){
       if(student.registeredCourses[i] === classObj.name) classCheck = 0;
     }
-    console.log(classCheck);
+    //console.log(classCheck);
 
     if(classCheck){
       console.log("\nAdding " + classObj.name + " to " + student.username.first + "'s Class List\n");
