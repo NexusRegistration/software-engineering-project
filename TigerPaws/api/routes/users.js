@@ -7,7 +7,6 @@ const { default: mongoose } = require('mongoose');
 const path = require('path');
 
 const router = express.Router();
-const path = require('path');
 
 router.post("/userLogin", async(req, res) => {
   const { email, pwd } = req.body;
