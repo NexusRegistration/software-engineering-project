@@ -35,6 +35,61 @@ Page comes with a search bar for courses and the standard Top Nav Bar.
                   </div>
                 </div>
               </form>
-        </div>
+              <!--Subject Dropdown Menu-->
+          <div class="form-input">
+            <input type="text" class="form-control" id="department" placeholder="Department">
+          </div>
+
+          <!--Pathway Dropdown Menu-->
+          <div class="form-input">
+            <input type="text" class="form-control" id="pathway" placeholder="Pathway">
+          </div>
+
+          <!--Course ID Text Box-->
+          <div class="form-input">
+              <input type="number" class="form-control" id="classID" name="classID" min="1000" max="9999" placeholder="Course ID">
+          </div>
+
+          <!--Credit Dropdown Menu-->
+          <div class="form-input">
+            <select id="credits" name="credits" class="form-control">
+                <option selected value="">Credits...</option>
+                    <option value="1">1.0</option>
+                    <option value="2">2.0</option>
+                    <option value="3">3.0</option>
+                    <option value="4">4.0</option>
+            </select>
+          </div>
+             
+          <!--Professor-->
+          <div class="form-input">
+              <input type="text" class="form-control" id="inputProf" placeholder="Professor Name">
+          </div>
+
+          <!--Time Dropdown Menu-->
+          <div class="form-input">
+              <select class="form-control" id="schedule" name="schedule" required>
+                  <option selected>Time...</option>
+              </select>
+          </div>
+
+          <!--Class name-->
+          <div class="form-input">
+            <input type="text" class="form-control" id="className" placeholder="Class Name">  
+          </div>
+          
+          <!--Course Level-->
+          <div class="form-input">
+              <select id="inputLevel" name="inputLevel" class="form-control">
+                  <option selected value="">Course Level...</option>
+                      <option value="1">1000</option>
+                      <option value="2">2000</option>
+                      <option value="3">3000</option>
+                      <option value="4">4000</option>
+                      <option value="5">5000</option>
+                      <option value="6">Capstone</option>
+              </select>
+          </div>
+      </div>
     </body>
 </html>
