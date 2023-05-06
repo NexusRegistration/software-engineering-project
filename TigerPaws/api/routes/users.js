@@ -66,10 +66,8 @@ router.post("/register", async(req, res) =>{
       } else {
         console.log("No one is currently logged in so you cannot be registered for a class.");
       }
-      //console.log("Before res render");
       //res.render(path.join(__dirname, '/../../views/pages/student-page.ejs'))
-      //return res.redirect('/student-page');
-      //console.log("After res render");
+      //This statement above (res.render) produces an error
   } catch (err) {
       //Handle Errors
       console.error(err);
