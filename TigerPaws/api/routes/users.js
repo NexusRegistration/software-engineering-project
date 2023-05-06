@@ -85,38 +85,36 @@ async function addToList(studentId, classId) {
   try {
     const student = await userModel.findById(studentId);
     const classObj = await courseModel.findById(classId);
+    let classCheck = 1;
 
-    console.log("\nAdding " + classObj.name + " to " + student.username.first + "'s Class List\n");
+    for(let i = 0; i < student.registeredCourses.length; ++i){
+      if(student.registeredCourses[i] === classObj.name) classCheck = 0;
+    }
+    console.log(classCheck);
 
-    student.registeredCourses.push(classObj.name);
+    if(classCheck){
+      console.log("\nAdding " + classObj.name + " to " + student.username.first + "'s Class List\n");
 
-    console.log(student);
+      student.registeredCourses.push(classObj.name);
 
-    //classObj.students.push(student._id);
+      console.log(student);
 
-    // Save the updated student document to the User collection
-    await student.save().catch(err => {
-      console.error('Error saving student:', err);
-      throw err;
-    });
+      // Save the updated student document to the User collection
+      await student.save().catch(err => {
+        console.error('Error saving student:', err);
+        throw err;
+      });
 
-    /*const filter = {email: student.email}
-
-      const updateDoc = {
-        $push: {
-          registeredCourses: classObj.name
-        }
-      }
-      
-      const result = await userModel.updateOne(filter, updateDoc)
-      console.log(result)*/
-    
-    //await Clss.findByIdAndUpdate(classId, { $addToSet: { students: studentId } }, { new: true });
-
-    return {
-      success: true,
-      message: `The class "${classObj.name}" has been added to ${student.username.first}'s class list.`
-    };
+      return {
+        success: true,
+        message: `The class "${classObj.name}" has been added to ${student.username.first}'s class list.`
+      };
+    } else {
+      return {
+        success: false,
+        message: 'You have already registered for this class!'
+      };
+    }
   } catch (error) {
     return {
       success: false,
